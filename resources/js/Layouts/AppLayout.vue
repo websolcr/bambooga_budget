@@ -38,7 +38,7 @@ export default {
             showingNavigationDropdown: ref(false),
             navigations: [
                 {name: 'සාමාජිකයන්', href: '/'},
-                {name: 'ආදායම් මාර්ග', href: '/Income_sources'},
+                {name: 'ආදායම් මාර්ග', href: '/income-sources'},
             ]
         }
     },
@@ -458,8 +458,21 @@ export default {
 
             <!-- Page Heading -->
             <header v-if="$slots.header" class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    <slot name="header" />
+                <div class="w-full mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between items-center">
+                        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+              <slot name="header" />
+                        </h2>
+                    <div
+                        
+                        class="text-red-500 text-xl font-semibold"
+                    >
+                        පරීක්ෂා කිසීම සඳහා පමණි. මෙහි ප්‍රතිඵල භාවිතා නොකරන්න.
+                    </div>
+                    <div class="flex space-x-2">
+                        <slot name="top-button" />
+                    </div>
+                    </div>
                 </div>
             </header>
 

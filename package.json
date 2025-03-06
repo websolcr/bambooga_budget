@@ -19,6 +19,7 @@
         "vue": "^3.2.31"
     },
     "dependencies": {
+        "notivue": "^2.4.5",
         "vue-spinner": "^1.0.4"
     }
 }

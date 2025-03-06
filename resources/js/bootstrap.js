@@ -1,32 +1,23 @@
-/**
- * We'll load the axios HTTP library which allows us to easily issue requests
- * to our Laravel back-end. This library automatically handles sending the
- * CSRF token as a header based on the value of the "XSRF" token cookie.
- */
+import axios from 'axios'
+import { push } from 'notivue'
 
-import axios from 'axios';
-window.axios = axios;
+window.DEFAULT_TIMEZONE = 'Asia/Colombo'
 
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.$http = axios
 
-/**
- * Echo exposes an expressive API for subscribing to channels and listening
- * for events that are broadcast by Laravel. Echo and event broadcasting
- * allows your team to easily build robust real-time web applications.
- */
+window.$http.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
+window.$http.defaults.baseURL = '/api/'
 
-// import Echo from 'laravel-echo';
+window.$http.interceptors.response.use(
+  response => {
+    return response
+  },
 
-// import Pusher from 'pusher-js';
-// window.Pusher = Pusher;
+  error => {
+    if (error.response && [422, 403, 401, 500].includes(error.response.status)) {
+      push.error({ title: 'Oops...', message: error.response.data.message })
+    }
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: import.meta.env.VITE_PUSHER_APP_KEY,
-//     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
-//     wsHost: import.meta.env.VITE_PUSHER_HOST ? import.meta.env.VITE_PUSHER_HOST : `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`,
-//     wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
-//     wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
-//     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
-//     enabledTransports: ['ws', 'wss'],
-// });
+    return Promise.reject(error)
+  },
+)
