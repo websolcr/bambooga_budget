@@ -19,10 +19,15 @@
         </div>  
         <div
           v-if="columnVisibility.amountDetails.visible"
-          class="p-3 text-sm flex items-center justify-center text-center"
+          class="p-3 text-sm flex flex-col items-center justify-center text-center divide-y divide-green-default"
           :style="{width: columnVisibility.amountDetails.width}"
         >
-          <IncomeSourceDetailsRow />
+          <IncomeSourceDetailsRow
+            v-for="(amountDetail, index) in incomeSource.amount_details"
+            :key="amountDetail.id"
+            :amountDetail="amountDetail"
+            class="w-full"
+          />
         </div>  
         <div
           v-if="columnVisibility.edit.visible"

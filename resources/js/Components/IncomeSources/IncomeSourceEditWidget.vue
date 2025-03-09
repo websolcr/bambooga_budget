@@ -3,32 +3,26 @@
       :class="isShowing ? 'show' : ''"
       class="slide-in overflow-y-scroll p-2 space-y-2 flex flex-col"
     >
-      <div >
+      <div v-if="incomeSource">
         <div
-          class="py-4 px-2 space-x-2"
+          class="py-4 px-2 flex justify-between items-center"
         >
-          <div
-            class="text-sm"
-          >
-            <!-- {{ incomeSource.id ? 'වෙනස් කරන්න' : 'එකතු කරන්න' }} -->
+          <div class="font-semibold text-xs italic">
+            {{ incomeSource.id ? 'ආදායම් මාර්ගයක් වෙනස් කරන්න' : 'නව ආදායම් මාර්ගයක් ඇතුළත් ක‍රන්න' }}
           </div>
           <CloseIcon
             class="w-6 h-6 float-right cursor-pointer text-green-default"
             @click="$emit('close')"
           />
-          <!-- <div class="font-semibold text-xs italic">
-            නව ආදායම් මාර්ගයක් ඇතුළත් ක‍රන්න.
-          </div> -->
         </div>
   
         <div
-          class="space-y-2 divide-y divide-green-default"
+          class="space-y-2"
           style="min-height: calc(100vh - 250px)"
         >
-          <div class="flex flex-col space-y-2">
-            <div class="divide-y divide-green-default space-y-2 p-2">
-              <div class="space-y-2 text-sm">
-                                
+          <div class="flex flex-col space-y-2 px-2">
+              <div class="space-y-2 text-sm  divide-y divide-green-default">
+
                 <div>
                   <label for="name">නම</label>
                   <base-input
@@ -38,27 +32,59 @@
                     class="w-full"
                   />
                 </div>
+
                 <div>
-                  <label for="amount">ගාස්තුව</label>
-                  <base-input
-                    id="amount"
-                    v-model="form.amount"
-                    type="number"
-                    class="w-full"
-                  />
+                  <div class="flex justify-between items-center py-2">
+                    <div class="font-semibold">
+                      ගාස්තු විස්තර
+                    </div>
+                    <div>
+                      <AppButton 
+                        class="w-full h-8 font-semibold"
+                        label="ඇතුළත් කරන්න"
+                        @click="addAmountDetails"/>
+                    </div>
+                  </div>
+                  <div 
+                    v-if="! form.amount_details.length"
+                    class="text-sm mt-4 text-center"
+                  >
+                      ගාස්තු විස්තර නොමැත
+                  </div>
+
+                  <div 
+                    v-else
+                    class="space-y-4"
+                  >
+                    <div 
+                      v-for="amountDetail in form.amount_details"
+                      :key="amountDetail.id"
+                      class="text-sm border-2 p-4"
+                    >
+                      <div>
+                        <label for="amount">ගාස්තුව</label>
+                        <base-input
+                          id="amount"
+                          :model-value="amountDetail.amount"
+                          type="number"
+                          class="w-full"
+                          @update:model-value="modifyAmountDetail({...amountDetail, amount: $event})"
+                        />
+                      </div>
+                      <div>
+                        <label for="valid_from">වලංගු වන්නේ කවදා සිට ද?</label>
+                        <base-input
+                          id="valid_from"
+                          :model-value="amountDetail.valid_from"
+                          type="date"
+                          class="w-full"
+                          @update:model-value="modifyAmountDetail({...amountDetail, valid_from: $event})"
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div>
-                  <label for="valid_date">වලංගු වන්නේ කවදා සිට ද?</label>
-                  <base-input
-                    id="valid_date"
-                    v-model="form.valid_date"
-                    type="date"
-                    class="w-full"
-                  />
-                </div>
-                
               </div>
-            </div>
           </div>
         </div>
   
@@ -66,9 +92,7 @@
           <app-button
             class="w-full h-10 font-semibold"
             label="save"
-            @click="$emit('save', {
-              ...form,
-            })"
+            @click="emitSave"
           />
         </div>
       </div>
@@ -79,8 +103,14 @@
   import CloseIcon from '@/Icons/CloseIcon.vue'
   import AppButton from "@/Components/AppButton.vue"
   import BaseInput from '@/Components/Common/BaseInput.vue'
+  import {uniqueId} from "lodash";
   
-  
+  const INITIAL_FORM = {
+    id: '',
+    name: '',
+    amount_details: [],
+  }
+
   export default {
       name: 'IncomeSourceEditWidget',
   
@@ -105,22 +135,79 @@
   
       data() {
           return {
-              form: {},
+              form: {...INITIAL_FORM},
           }
       },
   
       computed: {
-
+          modifiedAmountDetails() {
+            return this.form.amount_details.filter(amountDetail => {
+              return amountDetail.is_new 
+                || amountDetail.amount !== this.getOriginalAmountDetail(amountDetail)?.amount
+                || amountDetail.valid_from !== this.getOriginalAmountDetail(amountDetail)?.valid_from
+            }).map(amountDetail => {
+              return {
+                ...amountDetail,
+                id: amountDetail.is_new ? null : amountDetail.id,
+              }
+            })
+          },
       },
   
       watch: {
           incomeSource: {
               deep: true,
-              immediate: true,
               handler() {
-                  this.form = {...this.incomeSource}
+                if (this.incomeSource.is_new === true) {
+                  this.form = {...INITIAL_FORM}
+                  return
+                }
+
+                this.form = {
+                  ...this.incomeSource,
+                  amount_details: [...this.incomeSource.amount_details]
+                }
               }
           },
+      },
+
+      methods: {
+        modifyAmountDetail(modifiedAmountDetail) {
+          console.log(modifiedAmountDetail);
+          this.form.amount_details = this.form.amount_details.map(existingAmountDetail => {
+            if (modifiedAmountDetail.id !== existingAmountDetail.id){
+              return existingAmountDetail
+            }
+
+            return {...modifiedAmountDetail}
+          })
+        },
+
+        getOriginalAmountDetail(modifiedAmountDetail) {
+            return this.incomeSource.amount_details.find(originalAmountDetail => originalAmountDetail.id === modifiedAmountDetail.id)
+        },
+
+        addAmountDetails() {
+            const newAmountDetail = {
+                id: uniqueId('amount_details-'),
+                amount: null,
+                valid_from: '',
+                is_new: true,
+            }
+
+            this.form.amount_details = [...this.form.amount_details, newAmountDetail]
+        },
+
+        emitSave() {
+          console.log(this.form);
+          this.$emit(
+            'save', 
+            {
+              ...this.form,
+              amount_details: this.modifiedAmountDetails
+            }
+          )
+        },
       },
   }
   </script>

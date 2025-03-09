@@ -9,6 +9,8 @@ class GetIncomeSourcesAction
 {
     public function execute(): Collection
     {
-        return IncomeSource::all();
+        return IncomeSource::with(
+            'AmountDetails'
+        )->get();
     }
 }

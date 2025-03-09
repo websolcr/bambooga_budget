@@ -3,18 +3,17 @@
 namespace App\Domain\IncomeSources\Actions;
 
 use App\Domain\IncomeSources\Models\IncomeSource;
-use Illuminate\Support\Arr;
+use App\Data\IncomeSource\IncomeSourceData;
 
 class UpdateIncomeSourceAction
 {
-    public function execute(IncomeSource $incomeSource, array $data): IncomeSource
+    public function __invoke(IncomeSource $incomeSource, IncomeSourceData $incomeData): IncomeSource
     {
-        $incomeSource->fill([
-            'name' => Arr::get($data, 'name'),
+        $incomeSource->update([
+            'name' => $incomeData->name,
         ]);
-
-        $incomeSource->save();
 
         return $incomeSource;
     }
+
 }

@@ -12,6 +12,7 @@
         "laravel/jetstream": "^4.3",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "mavinoo/laravel-batch": "^2.4",
         "spatie/laravel-ignition": "^2.9",
         "tightenco/ziggy": "^2.0"
     },

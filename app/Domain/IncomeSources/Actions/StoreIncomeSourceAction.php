@@ -3,28 +3,16 @@
 namespace App\Domain\IncomeSources\Actions;
 
 use App\Domain\IncomeSources\Models\IncomeSource;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\DB;
-use Throwable;
+use App\Data\IncomeSource\IncomeSourceData;
 
 class StoreIncomeSourceAction
 {
-    public function execute(array $data): IncomeSource
+    public function __invoke(IncomeSourceData $incomeSourceData): IncomeSource
     {
-        DB::beginTransaction();
+        $incomeSource = IncomeSource::create([
+            'name' => $incomeSourceData->name,
+        ]);
 
-        try {
-            $incomeSource = IncomeSource::create([
-                'name' => Arr::get($data, 'name'),
-            ]);
-
-            DB::commit();
-        } catch (Throwable $e) {
-            DB::rollBack();
-
-            throw $e;
-        }
-    
         return $incomeSource;
     }
 }

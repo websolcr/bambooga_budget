@@ -19,7 +19,7 @@
           :class="styleClasses"
           :style="{width: columnVisibility.amountDetails.width}"
         >
-          Amount Details
+          <IncomeSourceDetailsHeading class="w-full" />
         </div>
         <div
           v-if="columnVisibility.edit.visible"
@@ -29,10 +29,10 @@
           edit
         </div>
       </div>
+
       <div
         class="divide-y divide-gray-200 bg-white rounded-b-lg"
       >
-        
         <div
           v-if="!incomeSources.length"
           class="whitespace-nowrap py-4 pl-4 pr-3 text-sm sm:pl-6"
@@ -61,11 +61,12 @@
   
   import IncomeSourcesTableRow from "@/Components/IncomeSources/IncomeSourcesTableRow.vue"
   import Spinner from "vue-spinner/src/ClipLoader.vue"
+  import IncomeSourceDetailsHeading from "./IncomeSourceDetailsHeading.vue"
   
   export default {
       name: 'IncomeSourcesTable',
   
-      components: {Spinner, IncomeSourcesTableRow},
+      components: {Spinner, IncomeSourcesTableRow, IncomeSourceDetailsHeading},
   
       props: {
         incomeSources: {

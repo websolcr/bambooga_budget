@@ -2,8 +2,8 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import AppButton from "@/Components/AppButton.vue";
 import IncomeSourceEditWidget from '@/Components/IncomeSources/IncomeSourceEditWidget.vue';
-import { inject, onMounted, ref } from 'vue'
 import IncomeSourcesTable from '@/Components/IncomeSources/IncomeSourcesTable.vue';
+import {uniqueId} from "lodash";
 
 export default {
     name: 'IncomeSources',
@@ -31,7 +31,6 @@ export default {
     methods: { 
         async fetchIncomeSources() {
             const { data } = await $http.get('income-sources')
-            console.log(data)
             this.incomeSources = data    
             return data
         },
@@ -46,6 +45,15 @@ export default {
             const newIncomeSource = {
                 id: null,
                 name: '',
+                amount_details: [
+                    {
+                        id: uniqueId('amount_details'),
+                        amount: null,
+                        valid_from: '',
+                        is_new: true,
+                    } 
+                ], 
+                is_new: true
             }
 
             this.selectIncomeSource(newIncomeSource)    
@@ -53,7 +61,7 @@ export default {
 
         async save(incomeSource) {
             // this.$wait.start('saving-income-source')
-
+            console.log(incomeSource)
             const uri = incomeSource.id ? `income-sources/${incomeSource.id}` : 'income-sources'
 
             console.log(uri)

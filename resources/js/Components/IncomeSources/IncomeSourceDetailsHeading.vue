@@ -6,12 +6,12 @@
         <div
           class="p-3 text-sm flex items-center justify-center text-center w-1/2"
         >
-          {{ amountDetail.amount }}
+            ගාස්තුව
         </div>  
         <div
           class="p-3 text-sm flex items-center justify-center text-center w-1/2"
         >
-          {{ amountDetail.valid_from }}
+            වලංගු දිනය
         </div>     
       </div>  
     </div>
@@ -20,30 +20,16 @@
   <script>
     
   export default {
-      name: 'IncomeSourceDetailsRow',
+      name: 'IncomeSourceDetailsHeading',
 
       components: {
         
       },
-  
-      props: {
-        amountDetail: {
-              type: Object,
-              required: true,
-          },
-    },
   
     data() {
         return {
             isExpanded: false,
         }
     },
-
-    methods: {
-      
-    },
-
-
 }
   </script>
-  
