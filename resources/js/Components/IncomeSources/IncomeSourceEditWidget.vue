@@ -15,7 +15,7 @@
             @click="$emit('close')"
           />
         </div>
-  
+
         <div
           class="space-y-2"
           style="min-height: calc(100vh - 250px)"
@@ -39,24 +39,24 @@
                       ගාස්තු විස්තර
                     </div>
                     <div>
-                      <AppButton 
+                      <AppButton
                         class="w-full h-8 font-semibold"
                         label="ඇතුළත් කරන්න"
                         @click="addAmountDetails"/>
                     </div>
                   </div>
-                  <div 
+                  <div
                     v-if="! form.amount_details.length"
                     class="text-sm mt-4 text-center"
                   >
                       ගාස්තු විස්තර නොමැත
                   </div>
 
-                  <div 
+                  <div
                     v-else
                     class="space-y-4"
                   >
-                    <div 
+                    <div
                       v-for="amountDetail in form.amount_details"
                       :key="amountDetail.id"
                       class="text-sm border-2 p-4"
@@ -87,7 +87,7 @@
               </div>
           </div>
         </div>
-  
+
         <div class="pt-4 space-y-2">
           <app-button
             class="w-full h-10 font-semibold"
@@ -98,13 +98,13 @@
       </div>
     </div>
   </template>
-  
+
   <script>
   import CloseIcon from '@/Icons/CloseIcon.vue'
   import AppButton from "@/Components/AppButton.vue"
   import BaseInput from '@/Components/Common/BaseInput.vue'
   import {uniqueId} from "lodash";
-  
+
   const INITIAL_FORM = {
     id: '',
     name: '',
@@ -113,36 +113,36 @@
 
   export default {
       name: 'IncomeSourceEditWidget',
-  
+
       components: {
           BaseInput,
           AppButton,
           CloseIcon
       },
-  
+
       props: {
           isShowing: {
               type: Boolean,
               default: () => false,
           },
-  
+
           incomeSource: {
               type: Object,
               default: () => null,
           },
-  
+
       },
-  
+
       data() {
           return {
               form: {...INITIAL_FORM},
           }
       },
-  
+
       computed: {
           modifiedAmountDetails() {
             return this.form.amount_details.filter(amountDetail => {
-              return amountDetail.is_new 
+              return amountDetail.is_new
                 || amountDetail.amount !== this.getOriginalAmountDetail(amountDetail)?.amount
                 || amountDetail.valid_from !== this.getOriginalAmountDetail(amountDetail)?.valid_from
             }).map(amountDetail => {
@@ -153,7 +153,7 @@
             })
           },
       },
-  
+
       watch: {
           incomeSource: {
               deep: true,
@@ -173,7 +173,6 @@
 
       methods: {
         modifyAmountDetail(modifiedAmountDetail) {
-          console.log(modifiedAmountDetail);
           this.form.amount_details = this.form.amount_details.map(existingAmountDetail => {
             if (modifiedAmountDetail.id !== existingAmountDetail.id){
               return existingAmountDetail
@@ -199,9 +198,8 @@
         },
 
         emitSave() {
-          console.log(this.form);
           this.$emit(
-            'save', 
+            'save',
             {
               ...this.form,
               amount_details: this.modifiedAmountDetails
@@ -211,7 +209,7 @@
       },
   }
   </script>
-  
+
   <style scoped>
   .slide-in {
       width: 350px;
@@ -224,9 +222,8 @@
       box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
       transition: all 0.8s ease-in-out;
   }
-  
+
   .show {
       right: 0;
   }
   </style>
-  

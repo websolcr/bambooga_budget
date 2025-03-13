@@ -10,7 +10,7 @@ class GetIncomeSourcesAction
     public function execute(): Collection
     {
         return IncomeSource::with(
-            'AmountDetails'
+            'amountDetails'
         )->get();
     }
 }

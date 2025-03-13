@@ -24,13 +24,9 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-Route::get('/', function () {
-    return Inertia::render('Subscribers');
-});
+Route::get('/', fn () => Inertia::render('Subscribers'));
 
-Route::get('/income-sources', function () {
-    return Inertia::render('IncomeSources');
-});
+Route::get('/income-sources', fn () => Inertia::render('IncomeSources'));
 
 // Route::middleware([
 //     'auth:sanctum',

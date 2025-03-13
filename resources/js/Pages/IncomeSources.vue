@@ -14,7 +14,7 @@ export default {
         IncomeSourceEditWidget,
         IncomeSourcesTable,
     },
-    
+
 
     data() {
         return {
@@ -25,19 +25,18 @@ export default {
     },
 
     async created() {
-        this.fetchIncomeSources()
+        await this.fetchIncomeSources()
     },
 
-    methods: { 
+    methods: {
         async fetchIncomeSources() {
             const { data } = await $http.get('income-sources')
-            this.incomeSources = data    
+            this.incomeSources = data
             return data
         },
 
         selectIncomeSource(incomeSource) {
             this.selectedIncomeSource = {...incomeSource}
-            console.log(incomeSource)
             this.isOpenIncomeSourceEditWidget = true
         },
 
@@ -51,20 +50,18 @@ export default {
                         amount: null,
                         valid_from: '',
                         is_new: true,
-                    } 
-                ], 
+                    }
+                ],
                 is_new: true
             }
 
-            this.selectIncomeSource(newIncomeSource)    
+            this.selectIncomeSource(newIncomeSource)
         },
 
         async save(incomeSource) {
             // this.$wait.start('saving-income-source')
-            console.log(incomeSource)
             const uri = incomeSource.id ? `income-sources/${incomeSource.id}` : 'income-sources'
 
-            console.log(uri)
             const method = incomeSource.id ? 'put' : 'post'
 
             await $http[method](uri, incomeSource)
@@ -80,7 +77,7 @@ export default {
 </script>
 
 <template>
-    <AppLayout title="ආදායම්_මාර්ග">
+    <AppLayout title="ආදායම් මාර්ග">
         <template #header>
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 ආදායම්_මාර්ග
@@ -94,7 +91,7 @@ export default {
     </template>
         <div class="py-12">
             <div class="w-full mx-auto sm:px-6 lg:px-8 space-y-2">
-                <IncomeSourcesTable 
+                <IncomeSourcesTable
                     :incomeSources="incomeSources"
                     @select="selectIncomeSource"
                 />

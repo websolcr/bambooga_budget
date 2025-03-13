@@ -8,6 +8,5 @@ class AmountDetailsOfIncomeSourceData
         public int $amount,
         public string $valid_from,
         public ?string $id = null,
-    ) {
-    }
+    ) {}
 }

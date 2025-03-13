@@ -2,15 +2,12 @@
 
 namespace App\Http\Requests;
 
-use App\Domain\IncomeSources\Models\IncomeSource;
-use App\Data\IncomeSource\IncomeSourceData;
 use App\Data\IncomeSource\AmountDetailsOfIncomeSourceData;
+use App\Data\IncomeSource\IncomeSourceData;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Collection;
 
-
-class StoreIncomeSourceRequest extends FormRequest
+class IncomeSourceRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -24,12 +21,16 @@ class StoreIncomeSourceRequest extends FormRequest
     public function incomeSourceData(): IncomeSourceData
     {
         return new IncomeSourceData(
-            request('name'),
-            request('id')
+            name: request('name'),
+            amountDetails: $this->amountDetailsOfIncomeSource(),
+            id: request('id'),
         );
     }
 
-    public function amountDetailsOfIncomeSource(): Collection
+    /**
+     * @return Collection<AmountDetailsOfIncomeSourceData>
+     */
+    private function amountDetailsOfIncomeSource(): Collection
     {
         return collect(request('amount_details'))->map(function (array $amountDetails) {
             return new AmountDetailsOfIncomeSourceData(

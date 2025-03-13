@@ -4,13 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Domain\IncomeSources\Actions\GetIncomeSourcesAction;
 use App\Domain\IncomeSources\Actions\StoreIncomeSourceAction;
-use App\Domain\IncomeSources\Actions\StoreAmountDetailsOfIncomeSourceAction;
 use App\Domain\IncomeSources\Actions\UpdateIncomeSourceAction;
-use App\Http\Requests\StoreIncomeSourceRequest;
-use App\Http\Requests\UpdateIncomeSourceRequest;
 use App\Domain\IncomeSources\Models\IncomeSource;
+use App\Http\Requests\IncomeSourceRequest;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 
 class IncomeSourcesController extends Controller
 {
@@ -18,48 +15,22 @@ class IncomeSourcesController extends Controller
     {
         return response()->json($getIncomeSourcesAction->execute());
     }
-    
-    public function store(
-        StoreIncomeSourceRequest $request,
-        StoreIncomeSourceAction $storeIncomeSourceAction,
-        StoreAmountDetailsOfIncomeSourceAction $storeAmountDetailsOfIncomeSourceAction,
-    ): JsonResponse {
-        DB::beginTransaction();
-        // dd($request->toArray());
-        try {
-           $incomeSource = $storeIncomeSourceAction($request->incomeSourceData());
-           
-           $storeAmountDetailsOfIncomeSourceAction($incomeSource, $request->amountDetailsOfIncomeSource());
-        //    dd($storeAmountDetailsOfIncomeSourceAction);
-           DB::commit();
-        } catch (\Throwable $exception) {
-            DB::rollBack();
 
-            throw $exception;
-        }
+    public function store(
+        IncomeSourceRequest $request,
+        StoreIncomeSourceAction $storeIncomeSourceAction,
+    ): JsonResponse {
+        $storeIncomeSourceAction->execute($request->incomeSourceData());
 
         return response()->json();
     }
 
     public function update(
         IncomeSource $incomeSource,
-        StoreIncomeSourceRequest $request,
+        IncomeSourceRequest $request,
         UpdateIncomeSourceAction $updateIncomeSourceAction,
-        StoreAmountDetailsOfIncomeSourceAction $storeAmountDetailsOfIncomeSourceAction
     ): JsonResponse {
-        DB::beginTransaction();
-
-        try {
-            $updateIncomeSourceAction($incomeSource, $request->incomeSourceData());
-
-            $storeAmountDetailsOfIncomeSourceAction($incomeSource, $request->amountDetailsOfIncomeSource());
-
-            DB::commit();
-        } catch (\Throwable $exception) {
-            DB::rollBack();
-
-            throw $exception;
-        }
+        $updateIncomeSourceAction->execute($incomeSource, $request->incomeSourceData());
 
         return response()->json();
     }
