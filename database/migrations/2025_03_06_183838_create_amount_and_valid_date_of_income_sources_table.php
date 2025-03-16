@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignUuid('income_source_id')->constrained();
             $table->unsignedSmallInteger('amount');
             $table->date('valid_from');
-            $table->date('valid_end');
+            $table->date('valid_end')->nullable();
             $table->unsignedSmallInteger('payment_cycle');
             $table->timestamps();
         });
