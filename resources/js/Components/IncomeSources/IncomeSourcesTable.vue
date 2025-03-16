@@ -25,9 +25,7 @@
           v-if="columnVisibility.edit.visible"
           :class="styleClasses"
           :style="{width: columnVisibility.edit.width}"
-        >
-          edit
-        </div>
+        />
       </div>
 
       <div
@@ -39,7 +37,7 @@
         >
           No records.
         </div>
-  
+
         <div
           v-else
           class="divide-y divide-green-default"
@@ -56,30 +54,30 @@
       </div>
     </div>
   </template>
-  
+
   <script>
-  
+
   import IncomeSourcesTableRow from "@/Components/IncomeSources/IncomeSourcesTableRow.vue"
   import Spinner from "vue-spinner/src/ClipLoader.vue"
   import IncomeSourceDetailsHeading from "./IncomeSourceDetailsHeading.vue"
-  
+
   export default {
       name: 'IncomeSourcesTable',
-  
+
       components: {Spinner, IncomeSourcesTableRow, IncomeSourceDetailsHeading},
-  
+
       props: {
         incomeSources: {
               type: Array,
               required: true,
           },
       },
-  
+
       computed: {
           styleClasses() {
               return 'text-green-default border-b border-green-default font-semibold p-3 text-sm flex items-center justify-center text-center'
           },
-  
+
           columnVisibility() {
               return {
                   index: {visible: true, width: '3%'},
@@ -88,13 +86,12 @@
                   amountDetails: {visible: true, width: '70%'},
                 }
           },
-  
+
       },
-  
+
       methods: {
 
       }
-  
+
   }
   </script>
-  

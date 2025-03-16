@@ -16,40 +16,37 @@
           :style="{width: columnVisibility.name.width}"
         >
           {{ incomeSource.name }}
-        </div>  
+        </div>
         <div
           v-if="columnVisibility.amountDetails.visible"
           class="p-3 text-sm flex flex-col items-center justify-center text-center divide-y divide-green-default"
           :style="{width: columnVisibility.amountDetails.width}"
         >
           <IncomeSourceDetailsRow
-            v-for="(amountDetail, index) in incomeSource.amount_details"
+            v-for="amountDetail in incomeSource.amount_details"
             :key="amountDetail.id"
             :amountDetail="amountDetail"
             class="w-full"
           />
-        </div>  
+        </div>
         <div
           v-if="columnVisibility.edit.visible"
           class="p-3 text-sm flex items-center justify-center text-center"
           :style="{width: columnVisibility.edit.width}"
         >
-          <AppButton 
+          <AppButton
             label="Edit"
             @click="selectIncomeSource"
-          />      
-        </div>    
-      </div>      
+          />
+        </div>
+      </div>
     </div>
   </template>
-  
-  <script>
-import AppButton from '../AppButton.vue';
-import IncomeSourceDetailsRow from './IncomeSourceDetailsRow.vue';
 
-  
-//   import {isNull} from "lodash"
-    
+  <script>
+import AppButton from "@/Components/AppButton.vue";
+import IncomeSourceDetailsRow from "@/Components/IncomeSources/IncomeSourceDetailsRow.vue";
+
   export default {
       name: 'IncomeSourcesTableRow',
 
@@ -57,13 +54,12 @@ import IncomeSourceDetailsRow from './IncomeSourceDetailsRow.vue';
         AppButton,
         IncomeSourceDetailsRow,
       },
-  
+
       props: {
         incomeSource: {
               type: Object,
               required: true,
           },
-  
           index: {
               type: Number,
               required: true,
@@ -73,7 +69,7 @@ import IncomeSourceDetailsRow from './IncomeSourceDetailsRow.vue';
             required: true,
         },
     },
-  
+
     data() {
         return {
             isExpanded: false,
@@ -91,4 +87,3 @@ import IncomeSourceDetailsRow from './IncomeSourceDetailsRow.vue';
 
 }
   </script>
-  

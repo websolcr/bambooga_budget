@@ -12,7 +12,17 @@
           class="p-3 text-sm flex items-center justify-center text-center w-1/2"
         >
             වලංගු දිනය
-        </div>     
+        </div>
+        <div
+          class="p-3 text-sm flex items-center justify-center text-center w-1/2"
+        >
+            අවලංගු වන දිනය
+        </div>
+        <div
+          class="p-3 text-sm flex items-center justify-center text-center w-1/2"
+        >
+            අය කරන ආකාරය
+        </div>         
       </div>  
     </div>
   </template>

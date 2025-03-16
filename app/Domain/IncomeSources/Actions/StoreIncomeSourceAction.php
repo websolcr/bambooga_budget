@@ -2,17 +2,32 @@
 
 namespace App\Domain\IncomeSources\Actions;
 
-use App\Domain\IncomeSources\Models\IncomeSource;
 use App\Data\IncomeSource\IncomeSourceData;
+use App\Domain\IncomeSources\Models\IncomeSource;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 class StoreIncomeSourceAction
 {
-    public function __invoke(IncomeSourceData $incomeSourceData): IncomeSource
-    {
-        $incomeSource = IncomeSource::create([
-            'name' => $incomeSourceData->name,
-        ]);
+    public function __construct(private StoreAmountDetailsOfIncomeSourceAction $storeAmountDetailsOfIncomeSourceAction) {}
 
-        return $incomeSource;
+    public function execute(IncomeSourceData $incomeSourceData): void
+    {
+        DB::beginTransaction();
+
+        try {
+            $incomeSource = IncomeSource::create(['name' => $incomeSourceData->name]);
+
+            $this->storeAmountDetailsOfIncomeSourceAction->execute(
+                $incomeSource,
+                $incomeSourceData->amountDetails
+            );
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
     }
 }
