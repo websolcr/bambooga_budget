@@ -15,6 +15,13 @@
           නම
         </div>
         <div
+          v-if="columnVisibility.paymentCycle.visible"
+          :class="styleClasses"
+          :style="{width: columnVisibility.paymentCycle.width}"
+        >
+          අය කරන ආකාරය
+        </div>
+        <div
           v-if="columnVisibility.amountDetails.visible"
           :class="styleClasses"
           :style="{width: columnVisibility.amountDetails.width}"
@@ -82,8 +89,9 @@
               return {
                   index: {visible: true, width: '3%'},
                   name: {visible: true, width: '20%'},
+                  paymentCycle: {visible: true, width: '20%'},
                   edit: {visible: true, width: '7%'},
-                  amountDetails: {visible: true, width: '70%'},
+                  amountDetails: {visible: true, width: '50%'},
                 }
           },
 

@@ -20,7 +20,6 @@ class StoreAmountDetailsOfIncomeSourceAction
                     'amount' => $data->amount,
                     'valid_from' => $data->valid_from,
                     'valid_end' => $data->valid_end,
-                    'payment_cycle' => $data->payment_cycle,
                     'updated_at' => now()->toDateTimeString(),
                 ];
 

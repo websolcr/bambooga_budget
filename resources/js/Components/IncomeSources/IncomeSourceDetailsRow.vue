@@ -17,12 +17,7 @@
           class="p-3 text-sm flex items-center justify-center text-center w-1/2"
         >
           {{ amountDetail.valid_end }}
-        </div> 
-        <div
-          class="p-3 text-sm flex items-center justify-center text-center w-1/2"
-        >
-          {{ amountDetail.payment_cycle }}
-        </div>      
+        </div>     
       </div>  
     </div>
   </template>

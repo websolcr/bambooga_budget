@@ -32,6 +32,15 @@
                     class="w-full"
                   />
                 </div>
+                <div>
+                  <label for="payment_cycle">අය කරන ආකාරය</label>
+                    <SingleSelector
+                      v-model="selectedPaymentCycle"
+                      label="label"
+                      :options="paymentCycles"
+                      track-by="id"
+                    />
+                </div>
 
                 <div>
                   <div class="flex justify-between items-center py-2">
@@ -91,16 +100,6 @@
                           @update:model-value="modifyAmountDetail({...amountDetail, valid_end: $event})"
                         />
                       </div>
-                      <div>
-                        <label for="payment_cycle">අය කරන ආකාරය</label>
-                        <SingleSelector
-                          :model-value="selectedPaymentCycle"
-                          label="label"
-                          :options="paymentCycles"
-                          track-by="id"
-                          @update:model-value="modifyAmountDetail({...amountDetail, payment_cycle: $event.id})"
-                        />
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -129,6 +128,7 @@
   const INITIAL_FORM = {
     id: '',
     name: '',
+    payment_cycle: '',
     amount_details: [],
   }
 
@@ -179,7 +179,6 @@
                 || amountDetail.amount !== this.getOriginalAmountDetail(amountDetail)?.amount
                 || amountDetail.valid_from !== this.getOriginalAmountDetail(amountDetail)?.valid_from
                 || amountDetail.valid_end !== this.getOriginalAmountDetail(amountDetail)?.valid_end
-                || amountDetail.payment_cycle !== this.getOriginalAmountDetail(amountDetail)?.payment_cycle
             }).map(amountDetail => {
               return {
                 ...amountDetail,
@@ -199,10 +198,10 @@
 
           selectedPaymentCycle: {
             get() {
-                return this.paymentCycles.find(paymentCycle => this.form.paymentCycle === paymentCycle.id)
+                return this.paymentCycles.find(paymentCycle => this.form.payment_cycle === paymentCycle.id)
             },
             set(paymentCycle) {
-                this.form.paymentCycle = paymentCycle.id
+                this.form.payment_cycle = paymentCycle.id
             }
         },
 
@@ -246,7 +245,6 @@
                 amount: null,
                 valid_from: '',
                 valid_end: '',
-                payment_cycle: '',
                 is_new: true,
             }
 

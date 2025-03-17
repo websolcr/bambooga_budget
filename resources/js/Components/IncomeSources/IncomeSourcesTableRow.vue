@@ -18,6 +18,13 @@
           {{ incomeSource.name }}
         </div>
         <div
+          v-if="columnVisibility.paymentCycle.visible"
+          class="p-3 text-sm flex items-center justify-center text-center"
+          :style="{width: columnVisibility.paymentCycle.width}"
+        >
+          {{ incomeSource.payment_cycle }}
+        </div>
+        <div
           v-if="columnVisibility.amountDetails.visible"
           class="p-3 text-sm flex flex-col items-center justify-center text-center divide-y divide-green-default"
           :style="{width: columnVisibility.amountDetails.width}"

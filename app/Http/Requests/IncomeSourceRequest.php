@@ -15,10 +15,10 @@ class IncomeSourceRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
+            'payment_cycle' => ['required', Rule::in(array_keys(AmountDetailOfIncomeSource::PAYMENT_CYCLES))],
             'amount_details.*.amount' => 'required',
             'amount_details.*.valid_from' => 'required|date',
             'amount_details.*.valid_end' => 'required|date',
-            'amount_details.*.payment_cycle' => ['required', Rule::in(array_keys(AmountDetailOfIncomeSource::PAYMENT_CYCLES))],
         ];
     }
 
@@ -26,6 +26,7 @@ class IncomeSourceRequest extends FormRequest
     {
         return new IncomeSourceData(
             name: request('name'),
+            paymentCycle: request('payment_cycle'),
             amountDetails: $this->amountDetailsOfIncomeSource(),
             id: request('id'),
         );
@@ -41,7 +42,6 @@ class IncomeSourceRequest extends FormRequest
                 amount: $amountDetails['amount'],
                 valid_from: $amountDetails['valid_from'],
                 valid_end: $amountDetails['valid_end'],
-                payment_cycle: $amountDetails['payment_cycle'],
                 id: $amountDetails['id'],
             );
         });

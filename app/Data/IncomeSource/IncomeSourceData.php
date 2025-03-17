@@ -11,6 +11,7 @@ class IncomeSourceData
      */
     public function __construct(
         public string $name,
+        public string $paymentCycle,
         public Collection $amountDetails,
         public ?string $id,
     ) {}

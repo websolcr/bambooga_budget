@@ -44,13 +44,13 @@ export default {
             const newIncomeSource = {
                 id: null,
                 name: '',
+                payment_cycle: '',
                 amount_details: [
                     {
                         id: uniqueId('amount_details'),
                         amount: null,
                         valid_from: '',
                         valid_end: '',
-                        payment_cycle: '',
                         is_new: true,
                     }
                 ],

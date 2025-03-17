@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('income_sources', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
+            $table->unsignedSmallInteger('payment_cycle');
             $table->timestamps();
         });
     }

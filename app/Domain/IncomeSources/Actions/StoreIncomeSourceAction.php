@@ -16,7 +16,10 @@ class StoreIncomeSourceAction
         DB::beginTransaction();
 
         try {
-            $incomeSource = IncomeSource::create(['name' => $incomeSourceData->name]);
+            $incomeSource = IncomeSource::create([
+                'name' => $incomeSourceData->name,
+                'payment_cycle' => $incomeSourceData->paymentCycle,
+            ]);
 
             $this->storeAmountDetailsOfIncomeSourceAction->execute(
                 $incomeSource,

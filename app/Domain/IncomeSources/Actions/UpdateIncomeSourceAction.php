@@ -15,7 +15,10 @@ class UpdateIncomeSourceAction
         DB::beginTransaction();
 
         try {
-            $incomeSource->update(['name' => $incomeData->name]);
+            $incomeSource->update([
+                'name' => $incomeData->name,
+                'payment_cycle' => $incomeData->paymentCycle,
+            ]);
 
             $this->storeAmountDetailsOfIncomeSourceAction->execute(
                 $incomeSource,

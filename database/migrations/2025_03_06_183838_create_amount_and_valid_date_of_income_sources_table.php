@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedSmallInteger('amount');
             $table->date('valid_from');
             $table->date('valid_end')->nullable();
-            $table->unsignedSmallInteger('payment_cycle');
             $table->timestamps();
         });
     }
