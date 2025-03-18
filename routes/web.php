@@ -24,15 +24,15 @@ use Inertia\Inertia;
 //     ]);
 // });
 
-// Route::get('/', function () {
-//     return Inertia::render('Subscribers');
-// });
+Route::get('/', fn () => Inertia::render('Subscribers'));
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified',
-])->group(function () {
-    Route::redirect('dashboard', 'subscribers')->name('dashboard');
-    Route::get('subscribers', fn () => Inertia::render('Subscribers'))->name('subscribers');
-});
+Route::get('/income-sources', fn () => Inertia::render('IncomeSources'));
+
+// Route::middleware([
+//     'auth:sanctum',
+//     config('jetstream.auth_session'),
+//     'verified',
+// ])->group(function () {
+//     Route::redirect('dashboard', 'subscribers')->name('dashboard');
+//     Route::get('subscribers', fn () => Inertia::render('Subscribers'))->name('subscribers');
+// });
